@@ -1,19 +1,21 @@
-## Summary
-
 _How to write a PR request in GradeFlippr_
 
+## Brief Description
 
-Please include the following in your PR:
+Your summary should include category (see types of change below) and then a colon(:) and then a 2-5 word summary of your change. If you have multiple categories, put a slash (/) between them.
 
-**Description of Change:**
-
-Please describe your changes in detail
-
-**Type of Change:**
+**Types of Change:**
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] This change requires a documentation update
+- [ ] Documentation update
+
+_for example,_ New Feature: created login page 
+
+## Extended Description
+
+**Description:** Please describe your changes in detail
+
 
 **Verification of Functionality:**
 
