@@ -1,0 +1,7 @@
+FROM node:16.13
+WORKDIR /usr/src/gradeflippr
+RUN npm install webpack
+COPY package*.json /usr/src/gradeflippr/
+RUN npm install
+RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
+EXPOSE 3000
