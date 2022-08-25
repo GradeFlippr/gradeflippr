@@ -5,10 +5,11 @@ module.exports = {
     node: true,
   },
   extends: [
-    'plugin:react/recommended',
-    'standard-with-typescript',
+    'eslint:recommended',
     'airbnb',
+    'airbnb-typescript',
     'airbnb/hooks',
+    'plugin:react/recommended',
   ],
   overrides: [
   ],
