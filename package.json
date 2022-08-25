@@ -1,0 +1,49 @@
+{
+  "name": "gradeflippr",
+  "version": "0.1.0",
+  "description": "Flip your D to an A",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix .",
+    "prettier": "prettier --write .",
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GradeFlippr/gradeflippr.git"
+  },
+  "author": "Stephan Halarewicz, Rachelle Maiorca, Josh Merrell, Gwen Phillips",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GradeFlippr/gradeflippr/issues"
+  },
+  "homepage": "https://github.com/GradeFlippr/gradeflippr#readme",
+  "dependencies": {
+    "@types/jest": "^28.1.7",
+    "@types/node": "^18.7.10",
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "eslint-config-airbnb": "^19.0.4"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.35.1",
+    "@typescript-eslint/parser": "^5.34.0",
+    "eslint": "^8.22.0",
+    "eslint-config-standard-with-typescript": "^22.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.2.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.31.0",
+    "husky": "^8.0.0",
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx,css,md}": [
+      "npm run lint",
+      "prettier --write --ignore-unknown"
+    ]
+  }
+}
