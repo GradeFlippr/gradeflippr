@@ -1,14 +1,13 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
-import LoginPage from './pages/logInPage';
+import LoginPage from './pages/LogInPage';
 import { UnprotectedLayout } from './components/UnprotectedLayout';
 import { ProtectedLayout } from './components/ProtectedLayout';
 import { HomePage } from './pages/Home';
-import { SignupPage } from './pages/SignupPage';
+import SignUpPage from './pages/SignUpPage';
 import { StudentDashboard } from './pages/StudentDashboard';
 import { TutorDashboard } from './pages/TutorDashboard';
-// import { TutorDashboard } from './pages/TutorDashboard';
 
 export default function App() {
   return (
@@ -16,7 +15,7 @@ export default function App() {
       <Route element={<UnprotectedLayout />} >
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
       </Route>
 
       <Route path="/dashboard" element={<ProtectedLayout />}>
