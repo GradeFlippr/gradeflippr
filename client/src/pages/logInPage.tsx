@@ -5,14 +5,15 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+import Link from "@mui/material/Link";
+import { Link as RouterLink } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';    
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import studentPhoto from '../assets/students.png'
+import studentPhoto from '../assets/students.png';
 
 function Copyright(props: any) {
   return (
@@ -99,12 +100,7 @@ export default function logInPage() {
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
+              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Sign In
               </Button>
               <Grid container>
@@ -114,9 +110,11 @@ export default function logInPage() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
+                  <RouterLink to="/signup">
+                    <Link href="#" variant="body2">
+                      {"Don't have an account? Sign Up"}
+                    </Link>
+                  </RouterLink>
                 </Grid>
               </Grid>
               <Copyright sx={{ mt: 5 }} />
