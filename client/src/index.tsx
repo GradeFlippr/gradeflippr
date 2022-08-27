@@ -5,10 +5,6 @@ import reportWebVitals from './reportWebVitals';
 import { StrictMode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './hooks/useAuth';
-import SessionTableTutor from './components/sessionTableTutor';
-import SessionTableStudent from './components/sessionTableStudent';
-import { TutorDashboard } from './pages/TutorDashboard';
-import { StudentDashboard } from './pages/StudentDashboard';
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
