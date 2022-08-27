@@ -98,9 +98,7 @@ export default function logInPage() {
                 </Grid>
                 <Grid item>
                   <RouterLink to="/signup">
-                    <Link href="#" variant="body2">
                       {"Don't have an account? Sign Up"}
-                    </Link>
                   </RouterLink>
                 </Grid>
               </Grid>

@@ -150,9 +150,7 @@ export default function SignUpPage() {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <RouterLink to="/login">
-                  <Link href="#" variant="body2">
                     Already have an account? Sign in
-                  </Link>
                 </RouterLink>
               </Grid>
             </Grid>
