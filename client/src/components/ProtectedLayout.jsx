@@ -5,7 +5,7 @@ import { AppBar } from './AppBar';
 export const ProtectedLayout = () => {
   const { user } = useAuth();
   const outlet = useOutlet();
-  console.log(`CURR USER: ${user}`)
+  console.log(`CURR USER: ${user}`);
 
   if (user === null) {
     return <Navigate to="/" replace />;
