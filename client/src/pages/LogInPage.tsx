@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from "@mui/material/Link";
+import Link from '@mui/material/Link';
 import { Link as RouterLink } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -14,10 +14,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import studentPhoto from '../assets/students.png';
+import { useAuth } from '../hooks/useAuth';
 
 const theme = createTheme();
 
-export default function logInPage() {
+export default function LogInPage() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -25,6 +26,15 @@ export default function logInPage() {
       email: data.get('email'),
       password: data.get('password'),
     });
+  };
+  const { user, login } = useAuth();
+  const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+    console.log('clicked Sign In');
+    //MAKE CALL TO DB FOR SIGN IN, THEN IF SUCCESSFUL CALL 'login' from useAuth and then Redirect to /dashboard/student. If login fails, prompt user to retry
+
+    //TEST LOGIN CALL BELOW, REPLACE WITH CALL THAT PASSES VALID DB RESPONSE LATER
+    login('userA');
+    console.log(`CURR USER: ${user}`);
   };
 
   return (
@@ -87,7 +97,13 @@ export default function logInPage() {
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
-              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+              <Button
+                type="submit"
+                onClick={buttonHandler}
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
                 Sign In
               </Button>
               <Grid container>
@@ -97,11 +113,7 @@ export default function logInPage() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <RouterLink to="/signup">
-                    <Link href="#" variant="body2">
-                      {"Don't have an account? Sign Up"}
-                    </Link>
-                  </RouterLink>
+                  <RouterLink to="/signup">{"Don't have an account? Sign Up"}</RouterLink>
                 </Grid>
               </Grid>
             </Box>
