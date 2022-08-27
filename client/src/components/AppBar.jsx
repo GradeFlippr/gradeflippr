@@ -7,12 +7,15 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
+import dolphinlogo from '../assets/logonobackground.png';
 
 import Button from '@mui/material/Button';
 
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+
+const settings = ['Profile', 'Logout'];
 
 export const AppBar = ({ pages }) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -31,16 +34,33 @@ export const AppBar = ({ pages }) => {
   };
 
   return (
-    <MuiAppBar position="static">
+    <MuiAppBar position="static" style={{ background: '#20124dff' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+          <img
+            src={dolphinlogo}
+            style={{ padding: 10 }}
+            width="80"
+            height="80"
+            alt="Dolphin Tail Logo"
+          />
           <Typography
             variant="h6"
             noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              ml: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.1rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
           >
-            React Router Auth
+            GRADEFLIPPR
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -52,7 +72,7 @@ export const AppBar = ({ pages }) => {
               onClick={handleOpenNavMenu}
               color="inherit"
             >
-              <MenuIcon />
+              {/* <MenuIcon /> */}
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -90,7 +110,7 @@ export const AppBar = ({ pages }) => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
           >
-            React Router Auth
+            GRADEFLIPPR
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages?.map((page) => (
