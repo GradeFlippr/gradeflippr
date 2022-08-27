@@ -1,20 +1,20 @@
-import { BasicPage } from '../components/BasicPage';
-import SchoolIcon from '@mui/icons-material/School';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import SessionTableStudent from '../components/sessionTableStudent';
-import { AppBar } from '../components/AppBar';
 
 export const StudentDashboard = () => {
+  const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+    console.log('clicked Schedule New Session');
+  };
   return (
     <>
       <Box m={1} display="flex" justifyContent="space-between">
-        <Typography variant="h7" component="h1" align="left">
+        <Typography variant="h6" component="h1" align="left">
           Upcoming Sessions
         </Typography>
 
-        <Button variant="contained" color="success" alignItems="flex-end">
+        <Button onClick={buttonHandler} type="submit" variant="contained" color="success">
           Schedule a new session
         </Button>
       </Box>
