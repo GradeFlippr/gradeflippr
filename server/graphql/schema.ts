@@ -8,4 +8,8 @@ export default makeSchema({
     schema: join(process.cwd(), 'server', 'graphql', 'schema.graphql'),
     typegen: join(process.cwd(), 'server', 'graphql', 'nexus-typegen.ts'),
   },
+  contextType: {
+    module: join(process.cwd(), 'server', 'graphql', 'context.ts'),
+    export: 'Context',
+  },
 });

@@ -3,8 +3,10 @@
  * Do not make changes to this file directly
  */
 
+import type { Context } from './context';
+
 declare global {
-  type NexusGen = NexusGenTypes;
+  interface NexusGen extends NexusGenTypes {}
 }
 
 export interface NexusGenInputs {}
@@ -38,7 +40,7 @@ export interface NexusGenObjects {
   Subject: {
     // root type
     id: number; // Int!
-    name: number; // Int!
+    name: string; // String!
   };
   User: {
     // root type
@@ -89,7 +91,7 @@ export interface NexusGenFieldTypes {
   Subject: {
     // field return type
     id: number; // Int!
-    name: number; // Int!
+    name: string; // String!
   };
   User: {
     // field return type
@@ -132,7 +134,7 @@ export interface NexusGenFieldTypeNames {
   Subject: {
     // field return type name
     id: 'Int';
-    name: 'Int';
+    name: 'String';
   };
   User: {
     // field return type name
@@ -149,8 +151,8 @@ export interface NexusGenArgTypes {
   Mutation: {
     addSession: {
       // args
-      sessionId: number; // Int!
-      subject: string; // String!
+      subjectId: number; // Int!
+      timestamp: number; // Int!
       tutor: string; // String!
     };
     deleteSession: {
@@ -171,6 +173,12 @@ export interface NexusGenArgTypes {
       sessionId: number; // Int!
       student: string; // String!
       subject: string; // String!
+    };
+  };
+  Query: {
+    sessions: {
+      // args
+      tutorName: string; // String!
     };
   };
 }
@@ -204,7 +212,7 @@ export type NexusGenFeaturesConfig = {
 };
 
 export interface NexusGenTypes {
-  context: any;
+  context: Context;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   inputTypeShapes: NexusGenInputs & NexusGenEnums & NexusGenScalars;

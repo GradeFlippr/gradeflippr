@@ -1,17 +1,10 @@
 import { extendType, intArg, nonNull, objectType, stringArg } from 'nexus';
 
-// export const Query = objectType({
-//   name: 'Query',
-//   definition(t) {
-//     t.nonNull.boolean('ok');
-//   },
-// });
-
 export const Subject = objectType({
   name: 'Subject',
   definition(t) {
     t.nonNull.int('id');
-    t.nonNull.int('name');
+    t.nonNull.string('name');
   },
 });
 
@@ -21,7 +14,7 @@ export const subjects = extendType({
     t.nonNull.list.nonNull.field('subjects', {
       type: 'Subject',
       resolve(parent, args, context, info) {
-        return [];
+        return context.prisma.subject.findMany();
       },
     });
   },
@@ -41,7 +34,7 @@ export const schools = extendType({
     t.nonNull.list.nonNull.field('schools', {
       type: 'School',
       resolve(parent, args, context, info) {
-        return [];
+        return context.prisma.school.findMany();
       },
     });
   },
@@ -115,8 +108,11 @@ export const sessions = extendType({
   definition(t) {
     t.nonNull.list.nonNull.field('sessions', {
       type: 'Session',
+      args: {
+        tutorName: nonNull(stringArg()),
+      },
       resolve(parent, args, context, info) {
-        return [];
+        context.prisma.session.findMany({ where: { tutor_name: args.tutorName } });
       },
     });
   },
@@ -128,14 +124,19 @@ export const addSession = extendType({
     t.nonNull.field('addSession', {
       type: 'Session',
       args: {
-        sessionId: nonNull(intArg()),
         tutor: nonNull(stringArg()),
-        subject: nonNull(stringArg()),
+        subjectId: nonNull(intArg()),
+        timestamp: nonNull(intArg()),
       },
       resolve(parent, args, context) {
-        const { firstName, lastName, email, password, schoolId } = args;
-        // TODO: hash password
-        // TODO: session storage
+        const { tutor, subjectId, timestamp } = args;
+        return context.prisma.session.create({
+          data: {
+            tutor_name: tutor,
+            subject_id: subjectId,
+            timestamp: new Date(timestamp),
+          },
+        });
       },
     });
   },

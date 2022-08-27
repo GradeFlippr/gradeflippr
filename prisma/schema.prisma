@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id   Int    @id(map: "roles_pkey") @default(autoincrement())
+  role String @unique(map: "roles_unique_role") @db.VarChar(50)
+}
+
+model School {
+  id          Int    @id(map: "schools_pkey") @default(autoincrement()) @map("school_id")
+  school_name String @unique(map: "schools_unique_schoole_name") @db.VarChar(255)
+  User        User[]
+}
+
+model Session {
+  id                              Int      @id(map: "sessions_pkey") @default(autoincrement()) @map("session_id")
+  timestamp                       DateTime @db.Timestamp(6)
+  subject_id                      Int?
+  tutor_name                      String   @db.VarChar(255)
+  student_name                    String?  @db.VarChar(255)
+  Subject                         Subject? @relation(fields: [subject_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "sessions_fk0_subject_id")
+  User_Session_tutor_nameToUser   User     @relation("Session_tutor_nameToUser", fields: [tutor_name], references: [username], onDelete: NoAction, onUpdate: NoAction, map: "sessions_fk1_tutor_name")
+  User_Session_student_nameToUser User?    @relation("Session_student_nameToUser", fields: [student_name], references: [username], onDelete: NoAction, onUpdate: NoAction, map: "sessions_fk2_student_name")
+}
+
+model User {
+  username                           String    @id(map: "users_pkey") @db.VarChar(50)
+  first_name                         String    @db.VarChar(255)
+  last_name                          String    @db.VarChar(255)
+  email                              String    @unique(map: "users_unque_email") @db.VarChar(100)
+  school_id                          Int
+  password                           String    @db.VarChar(255)
+  School                             School    @relation(fields: [school_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_fk0")
+  Session_Session_tutor_nameToUser   Session[] @relation("Session_tutor_nameToUser")
+  Session_Session_student_nameToUser Session[] @relation("Session_student_nameToUser")
+}
+
+model Subject {
+  id      Int       @id(map: "subjects_pkey") @default(autoincrement()) @map("subject_id")
+  name    String    @map("subject_name") @db.VarChar
+  Session Session[]
+}
