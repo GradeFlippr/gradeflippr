@@ -9,10 +9,6 @@ import { AppBar } from '../components/AppBar';
 export const TutorDashboard = () => {
   return (
     <>
-      <br />
-      <AppBar />
-      <br />
-
       <Box m={1} display="flex" justifyContent="space-between">
         <Typography variant="h7" component="h1" align="left">
           Upcoming Sessions
