@@ -15,6 +15,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+// import { login } from '../hooks/useAuth';
 
 const theme = createTheme();
 
@@ -34,6 +35,10 @@ export default function SignUpPage() {
   const [role, setRole] = React.useState('');
   const handleChangeRole = (event: SelectChangeEvent) => {
     setRole(event.target.value as string);
+  };
+  const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+    console.log('clicked sign up');
+    //MAKE DB CALL FOR SIGN UP, THEN IF SUCCESSFUL, CALL 'login' FROM useAuth then Redirect to dashboard/student. If SignUp fails, prompt user to retry
   };
 
   return (
@@ -144,14 +149,12 @@ export default function SignUpPage() {
                 />
               </Grid>
             </Grid>
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <Button onClick={buttonHandler} type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <RouterLink to="/login">
-                    Already have an account? Sign in
-                </RouterLink>
+                <RouterLink to="/login">Already have an account? Sign in</RouterLink>
               </Grid>
             </Grid>
           </Box>

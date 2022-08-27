@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from "@mui/material/Link";
+import Link from '@mui/material/Link';
 import { Link as RouterLink } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -30,8 +30,8 @@ export default function logInPage() {
 
   const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log('clicked Sign In');
-    //MAKE CALL TO DB FOR SIGN IN, THEN IF SUCCESSFUL CALL 'login' from useAuth and then Redirect to /dashboard/student
-  }
+    //MAKE CALL TO DB FOR SIGN IN, THEN IF SUCCESSFUL CALL 'login' from useAuth and then Redirect to /dashboard/student. If login fails, prompt user to retry
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -93,7 +93,13 @@ export default function logInPage() {
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
-              <Button type="submit" onClick={buttonHandler} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+              <Button
+                type="submit"
+                onClick={buttonHandler}
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
                 Sign In
               </Button>
               <Grid container>
@@ -103,9 +109,7 @@ export default function logInPage() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <RouterLink to="/signup">
-                      {"Don't have an account? Sign Up"}
-                  </RouterLink>
+                  <RouterLink to="/signup">{"Don't have an account? Sign Up"}</RouterLink>
                 </Grid>
               </Grid>
             </Box>
