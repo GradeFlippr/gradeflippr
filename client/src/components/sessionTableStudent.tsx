@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import App from '../App';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -33,7 +32,11 @@ const rows = [
   { id: 2, tutorName: 'Gwen', subject: 'Anatomy', date: 'October 1, 2022', time: '3:00 pm' },
 ];
 
-export default function DataTable() {
+interface SessionTableStudentProps {
+  title: string;
+}
+
+export default function DataTable(props:SessionTableStudentProps) {
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid rows={rows} columns={columns} pageSize={5} rowsPerPageOptions={[5]} />
