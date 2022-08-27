@@ -1,137 +1,105 @@
 import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+// import App from '../App';
+import Button from '@mui/material/Button';
 
-interface Column {
-  id: 'TutorName' | 'Subject' | 'Date' | 'Time' | 'SignUp';
-  label: string;
-  minWidth?: number;
-  align?: 'right';
-  format?: (value: number) => string;
-}
+const scheduleButton = () => {
+  return (
+    <strong>
+      <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        style={{ marginLeft: 16 }}
+        // onClick={() => {
+        // }}
+      >
+        Schedule
+      </Button>
+    </strong>
+  );
+};
 
-const columns: readonly Column[] = [
-  { id: 'TutorName', label: 'Tutor Name', minWidth: 170 },
-  { id: 'Subject', label: 'Subject', minWidth: 100 },
+const columns: GridColDef[] = [
+  { field: 'id', headerName: 'ID', width: 70 },
+  { field: 'tutorName', headerName: 'Tutor Name', width: 200 },
+  { field: 'subject', headerName: 'Subject', width: 130 },
   {
-    id: 'Date',
-    label: 'Date',
-    minWidth: 170,
-    align: 'right',
-    // format: (value: string) =>
-    //   value.toLocaleString('en-US', {
-    //     weekday: 'long',
-    //     year: 'numeric',
-    //     month: 'short',
-    //     day: 'numeric',
-    //   }),
+    field: 'date',
+    headerName: 'Date',
+    align: 'left',
+    width: 160,
   },
   {
-    id: 'Time',
-    label: 'Time',
-    minWidth: 170,
-    align: 'right',
-    // format: (value: string) =>
-    //   value.toLocaleString('en-US', {
-    //     hour: '2-digit',
-    //     minute: '2-digit',
-    //   }),
+    field: 'time',
+    headerName: 'Time',
+
+    width: 120,
+    //   valueGetter: (params: GridValueGetterParams) =>
+    //     `${params.row.studentName || ''} ${params.row.subject || ''} ${params.row.date || ''} ${params.row.time || ''}`,
   },
   {
-    id: 'SignUp',
-    label: 'SignUp',
-    minWidth: 170,
-    align: 'right',
+    field: 'select',
+    headerName: 'Schedule',
+    width: 130,
+    align: 'left',
+    renderCell: scheduleButton,
   },
 ];
-
-interface Data {
-  TutorName: string;
-  Subject: string;
-  Date: string;
-  Time: string;
-  SignUp: string;
-}
-
-function createData(
-  TutorName: string,
-  Subject: string,
-  Date: string,
-  Time: string,
-  SignUp: string
-): Data {
-  return { TutorName, Subject, Date, Time, SignUp };
-}
 
 const rows = [
-  createData('Alex Smith', 'Algebra 1', '9/1/22', '1:00pm', 'signuphere'),
-  createData('Lorraine Gutierrez', 'Algebra 1', '9/2/22', '2:00pm', 'signuphere'),
-  createData('Aaliyah Jones', 'Algebra 1', '9/1/22', '1:00pm', 'signuphere'),
+  {
+    id: 1,
+    tutorName: 'Alex Smith',
+    subject: 'Algebra I',
+    date: 'September 12, 2022',
+    time: '1:00 pm',
+  },
+  {
+    id: 2,
+    tutorName: 'Lorraine Gutierrez',
+    subject: 'Algebra I',
+    date: 'October 1, 2022',
+    time: '3:00 pm',
+  },
+  {
+    id: 3,
+    tutorName: 'Aaliyah Jones',
+    subject: 'Algebra I',
+    date: 'October 1, 2022',
+    time: '3:00 pm',
+  },
 ];
 
-export default function StickyHeadTable() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
+export default function DataTable() {
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.Subject}>
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+    <div style={{ height: 400, width: '100%' }}>
+      <DataGrid rows={rows} columns={columns} pageSize={5} rowsPerPageOptions={[5]} />
+    </div>
   );
 }
+
+//   {
+//     id: 'Date',
+//     label: 'Date',
+//     minWidth: 170,
+//     align: 'right',
+//     // format: (value: string) =>
+//     //   value.toLocaleString('en-US', {
+//     //     weekday: 'long',
+//     //     year: 'numeric',
+//     //     month: 'short',
+//     //     day: 'numeric',
+//     //   }),
+//   },
+//   {
+//     id: 'Time',
+//     label: 'Time',
+//     minWidth: 170,
+//     align: 'right',
+//     // format: (value: string) =>
+//     //   value.toLocaleString('en-US', {
+//     //     hour: '2-digit',
+//     //     minute: '2-digit',
+//     //   }),
+//   },
