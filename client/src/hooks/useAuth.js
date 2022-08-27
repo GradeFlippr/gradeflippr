@@ -5,7 +5,7 @@ import { useLocalStorage } from './useLocalStorage';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useLocalStorage('user', 'userA');
+  const [user, setUser] = useLocalStorage('user', null);
   const navigate = useNavigate();
 
   const login = async (data) => {

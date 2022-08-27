@@ -14,11 +14,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import studentPhoto from '../assets/students.png';
-// import { login } from '../hooks/useAuth';
+import { useAuth } from '../hooks/useAuth';
 
 const theme = createTheme();
 
-export default function logInPage() {
+export default function LogInPage() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -27,10 +27,14 @@ export default function logInPage() {
       password: data.get('password'),
     });
   };
-
+  const { user, login } = useAuth();
   const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log('clicked Sign In');
     //MAKE CALL TO DB FOR SIGN IN, THEN IF SUCCESSFUL CALL 'login' from useAuth and then Redirect to /dashboard/student. If login fails, prompt user to retry
+
+    //TEST LOGIN CALL BELOW, REPLACE WITH CALL THAT PASSES VALID DB RESPONSE LATER
+    login('userA');
+    console.log(`CURR USER: ${user}`);
   };
 
   return (
