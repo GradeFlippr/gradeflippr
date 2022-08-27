@@ -8,6 +8,7 @@ import { AuthProvider } from './hooks/useAuth';
 
 // import App from './App';
 import ClassSelect from './components/ClassSelect';
+import DataTable from './components/TutoringOptions';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -15,6 +16,7 @@ root.render(
     <BrowserRouter>
       <AuthProvider>
         <ClassSelect />
+        <DataTable />
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>
