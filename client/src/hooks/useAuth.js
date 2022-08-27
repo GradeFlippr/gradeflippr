@@ -3,17 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from './useLocalStorage';
 
 const AuthContext = createContext();
-console.log('IN useAuth')
+console.log('IN useAuth');
 
 export const AuthProvider = ({ children }) => {
-  console.log('IN AuthProvider')
+  console.log('IN AuthProvider');
   const [user, setUser] = useLocalStorage('user', null);
   console.log(`USER: ${user}, setUser: ${JSON.stringify(setUser)}`);
   const navigate = useNavigate();
 
   const login = async (data) => {
     setUser(data);
-    navigate('/dashboard/student', { replace: true });
+    navigate('/dashboard/tutor', { replace: true });
   };
 
   const logout = () => {
