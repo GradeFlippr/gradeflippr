@@ -1,30 +1,27 @@
-// import React from 'react';
-// import logo from './logo.svg';
-// import './App.css';
-// import LoginPage from './pages/logInPage'
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import './App.css';
+import LoginPage from './pages/LogInPage';
+import { UnprotectedLayout } from './components/UnprotectedLayout';
+import { ProtectedLayout } from './components/ProtectedLayout';
+import { HomePage } from './pages/Home';
+import SignUpPage from './pages/SignUpPage';
+import { StudentDashboard } from './pages/StudentDashboard';
+import { TutorDashboard } from './pages/TutorDashboard';
 
-// function App() {
-//   return (
-//     // <div className="App">
-//     //   <header className="App-header">
-//     //     <img src={logo} className="App-logo" alt="logo" />
-//     //     <p>
-//     //       Edit <code>src/App.tsx</code> and save to reload.
-//     //     </p>
-//     //     <a
-//     //       className="App-link"
-//     //       href="https://reactjs.org"
-//     //       target="_blank"
-//     //       rel="noopener noreferrer"
-//     //     >
-//     //       Learn React
-//     //     </a>
-//     //   </header>
-//     // </div>
-//     // <div> 
-//     <LoginPage/>
-//     // </div>
-//   );
-// }
+export default function App() {
+  return (
+    <Routes>
+      <Route element={<UnprotectedLayout />} >
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+      </Route>
 
-// export default App;
+      <Route path="/dashboard" element={<ProtectedLayout />}>
+        <Route path="student" element={<StudentDashboard />} />
+        <Route path='tutor' element={<TutorDashboard />} />
+      </Route>
+    </Routes>
+  );
+}
