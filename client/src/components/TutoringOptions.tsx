@@ -1,21 +1,11 @@
 import * as React from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-// import App from '../App';
-import Button from '@mui/material/Button';
+import AlertDialogSlide from './Popup';
 
 const scheduleButton = () => {
   return (
     <strong>
-      <Button
-        variant="contained"
-        color="primary"
-        size="small"
-        style={{ marginLeft: 16 }}
-        // onClick={() => {
-        // }}
-      >
-        Schedule
-      </Button>
+      <AlertDialogSlide />
     </strong>
   );
 };
@@ -41,7 +31,7 @@ const columns: GridColDef[] = [
   {
     field: 'select',
     headerName: 'Schedule',
-    width: 130,
+    width: 180,
     align: 'left',
     renderCell: scheduleButton,
   },
@@ -74,7 +64,7 @@ const rows = [
 export default function DataTable() {
   return (
     <div style={{ height: 400, width: '100%' }}>
-      <DataGrid rows={rows} columns={columns} pageSize={5} rowsPerPageOptions={[5]} />
+      <DataGrid rows={rows} columns={columns} pageSize={10} rowsPerPageOptions={[5]} />
     </div>
   );
 }
