@@ -1,5 +1,24 @@
 import * as React from 'react';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import App from '../App';
+import Button from '@mui/material/Button';
+
+const cancelButton = () => {
+  return (
+    <strong>
+      <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        style={{ marginLeft: 16 }}
+        // onClick={() => {
+        // }}
+      >
+        Cancel
+      </Button>
+    </strong>
+  );
+};
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -15,10 +34,12 @@ const columns: GridColDef[] = [
     field: 'time',
     headerName: 'Time',
 
-    width: 90,
+    width: 120,
     //   valueGetter: (params: GridValueGetterParams) =>
     //     `${params.row.studentName || ''} ${params.row.subject || ''} ${params.row.date || ''} ${params.row.time || ''}`,
   },
+  { field: 'edit', headerName: 'Actions', width: 130, align: 'left', renderCell: cancelButton },
+  // { field: 'cancel', headerName: 'Actions', width: 130, align: 'left', renderCell: cancelButton },
 ];
 
 const rows = [
