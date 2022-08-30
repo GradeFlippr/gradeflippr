@@ -6,13 +6,14 @@ import { StrictMode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './hooks/useAuth';
 import App from './App';
+import { StudentDashboard } from './pages/StudentDashboard';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <App />
+        <StudentDashboard />
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>
