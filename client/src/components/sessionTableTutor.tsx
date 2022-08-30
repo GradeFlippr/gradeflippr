@@ -41,7 +41,7 @@ interface SessionTableTutorProps {
   title: string;
 }
 
-export default function DataTable(props:SessionTableTutorProps){
+export default function DataTable(props: SessionTableTutorProps) {
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid rows={rows} columns={columns} pageSize={5} rowsPerPageOptions={[5]} />
