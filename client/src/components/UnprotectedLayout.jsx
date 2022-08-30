@@ -14,8 +14,6 @@ export const UnprotectedLayout = () => {
     <div>
       <AppBar
         pages={[
-          { label: 'Home', path: '/' },
-          { label: 'Login', path: '/login' },
         ]}
       />
       {outlet}
