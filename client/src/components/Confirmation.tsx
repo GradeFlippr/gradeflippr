@@ -20,7 +20,7 @@ const Transition = React.forwardRef(function Transition(
 
 export default function ConfirmationPopup() {
   const navigate = useNavigate();
-  
+
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -44,6 +44,7 @@ export default function ConfirmationPopup() {
         size="small"
         style={{ marginLeft: 16 }}
         onClick={handleClickOpen}
+        sx={{ bgcolor: '#3F48CC' }}
       >
         Schedule
       </Button>

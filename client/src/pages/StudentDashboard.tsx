@@ -5,7 +5,6 @@ import SessionTableStudent from '../components/sessionTableStudent';
 import { useNavigate } from 'react-router-dom';
 
 export const StudentDashboard = () => {
-
   const navigate = useNavigate();
 
   const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -19,7 +18,13 @@ export const StudentDashboard = () => {
           Upcoming Sessions
         </Typography>
 
-        <Button onClick={buttonHandler} type="submit" variant="contained" color="success">
+        <Button
+          onClick={buttonHandler}
+          type="submit"
+          variant="contained"
+          color="success"
+          sx={{ bgcolor: '#3F48CC' }}
+        >
           Schedule a new session
         </Button>
       </Box>

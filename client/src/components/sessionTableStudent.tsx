@@ -13,6 +13,7 @@ const cancelButton = () => {
         style={{ marginLeft: 16 }}
         // onClick={() => {
         // }}
+        sx={{ bgcolor: '#3F48CC' }}
       >
         Cancel
       </Button>
