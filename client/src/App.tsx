@@ -13,16 +13,16 @@ import { ScheduleNewSession } from './pages/ScheduleNewSession';
 export default function App() {
   return (
     <Routes>
-      <Route element={<UnprotectedLayout />} >
-        <Route path="/" element={<HomePage />} />
+      <Route element={<UnprotectedLayout />}>
+        <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
       </Route>
 
       <Route path="/dashboard" element={<ProtectedLayout />}>
         <Route path="student" element={<StudentDashboard />} />
-        <Route path='tutor' element={<TutorDashboard />} />
-        <Route path='scheduleNewSession' element={<ScheduleNewSession />} />
+        <Route path="tutor" element={<TutorDashboard />} />
+        <Route path="scheduleNewSession" element={<ScheduleNewSession />} />
       </Route>
     </Routes>
   );

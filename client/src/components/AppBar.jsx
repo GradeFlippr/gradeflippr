@@ -83,7 +83,7 @@ export const AppBar = ({ pages }) => {
               keepMounted
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'left',
+                horizontal: 'right',
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
@@ -98,7 +98,7 @@ export const AppBar = ({ pages }) => {
               ))}
               {!!user && (
                 <MenuItem key={'logout'} onClick={logout}>
-                  <Typography textAlign="center">Logout</Typography>
+                  <Typography textAlign="right">Logout</Typography>
                 </MenuItem>
               )}
             </Menu>
