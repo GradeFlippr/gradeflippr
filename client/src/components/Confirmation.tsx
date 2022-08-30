@@ -7,6 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
+import { useNavigate } from 'react-router-dom';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -17,7 +18,9 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AlertDialogSlide() {
+export default function ConfirmationPopup() {
+  const navigate = useNavigate();
+  
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -26,6 +29,11 @@ export default function AlertDialogSlide() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleRedirect = () => {
+    setOpen(false);
+    navigate('/dashboard/student', { replace: true });
   };
 
   return (
@@ -55,7 +63,7 @@ export default function AlertDialogSlide() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Schedule another session</Button>
-          <Button onClick={handleClose}>Finished scheduling</Button>
+          <Button onClick={handleRedirect}>Finished scheduling</Button>
         </DialogActions>
       </Dialog>
     </div>

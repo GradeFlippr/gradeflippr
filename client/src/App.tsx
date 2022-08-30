@@ -8,6 +8,7 @@ import { HomePage } from './pages/Home';
 import SignUpPage from './pages/SignUpPage';
 import { StudentDashboard } from './pages/StudentDashboard';
 import { TutorDashboard } from './pages/TutorDashboard';
+import { ScheduleNewSession } from './pages/ScheduleNewSession';
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
       <Route path="/dashboard" element={<ProtectedLayout />}>
         <Route path="student" element={<StudentDashboard />} />
         <Route path='tutor' element={<TutorDashboard />} />
+        <Route path='scheduleNewSession' element={<ScheduleNewSession />} />
       </Route>
     </Routes>
   );

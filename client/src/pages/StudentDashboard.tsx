@@ -2,10 +2,15 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import SessionTableStudent from '../components/sessionTableStudent';
+import { useNavigate } from 'react-router-dom';
 
 export const StudentDashboard = () => {
+
+  const navigate = useNavigate();
+
   const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log('clicked Schedule New Session');
+    navigate('/dashboard/scheduleNewSession', { replace: true });
   };
   return (
     <>

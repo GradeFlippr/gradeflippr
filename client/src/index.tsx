@@ -6,7 +6,7 @@ import { StrictMode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './hooks/useAuth';
 
-// import App from './App';
+import App from './App';
 import ClassSelect from './components/ClassSelect';
 import DataTable from './components/TutoringOptions';
 
@@ -15,8 +15,7 @@ root.render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <ClassSelect />
-        <DataTable />
+        <App/>
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>

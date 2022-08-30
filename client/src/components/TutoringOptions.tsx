@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import AlertDialogSlide from './Popup';
+import ConfirmationPopup from './Confirmation';
 
 const scheduleButton = () => {
   return (
     <strong>
-      <AlertDialogSlide />
+      <ConfirmationPopup />
     </strong>
   );
 };
@@ -68,28 +68,3 @@ export default function DataTable() {
     </div>
   );
 }
-
-//   {
-//     id: 'Date',
-//     label: 'Date',
-//     minWidth: 170,
-//     align: 'right',
-//     // format: (value: string) =>
-//     //   value.toLocaleString('en-US', {
-//     //     weekday: 'long',
-//     //     year: 'numeric',
-//     //     month: 'short',
-//     //     day: 'numeric',
-//     //   }),
-//   },
-//   {
-//     id: 'Time',
-//     label: 'Time',
-//     minWidth: 170,
-//     align: 'right',
-//     // format: (value: string) =>
-//     //   value.toLocaleString('en-US', {
-//     //     hour: '2-digit',
-//     //     minute: '2-digit',
-//     //   }),
-//   },
