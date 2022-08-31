@@ -1,0 +1,11 @@
+version: '3'
+services:
+  dev:
+    image: 'joshmerrellorg/gradeflippr-dev'
+    container_name: 'gradeflippr-dev-hot'
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/src/gradeflippr
+      - /usr/src/gradeflippr/node_modules
+    command: npm run start

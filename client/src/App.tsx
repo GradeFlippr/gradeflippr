@@ -1,26 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
+import LoginPage from './pages/LogInPage';
+import { UnprotectedLayout } from './components/UnprotectedLayout';
+import { ProtectedLayout } from './components/ProtectedLayout';
+import { HomePage } from './pages/Home';
+import SignUpPage from './pages/SignUpPage';
+import { StudentDashboard } from './pages/StudentDashboard';
+import { TutorDashboard } from './pages/TutorDashboard';
+import { ScheduleNewSession } from './pages/ScheduleNewSession';
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route element={<UnprotectedLayout />}>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+      </Route>
+
+      <Route path="/dashboard" element={<ProtectedLayout />}>
+        <Route path="student" element={<StudentDashboard />} />
+        <Route path="tutor" element={<TutorDashboard />} />
+        <Route path="scheduleNewSession" element={<ScheduleNewSession />} />
+      </Route>
+    </Routes>
   );
 }
-
-export default App;
