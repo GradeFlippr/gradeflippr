@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/GradeFlippr/gradeflippr#readme",
   "dependencies": {
+    "@apollo/client": "^3.6.9",
     "@prisma/client": "^4.2.1",
     "@types/jest": "^28.1.7",
     "@types/node": "^18.7.10",

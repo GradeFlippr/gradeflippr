@@ -1,4 +1,4 @@
-import { Session as PrismaSession } from '@prisma/client';
+import { Prisma, Session as PrismaSession } from '@prisma/client';
 import { extendType, intArg, nonNull, objectType, stringArg } from 'nexus';
 
 export const Subject = objectType({
@@ -80,10 +80,30 @@ export const register = extendType({
         password: nonNull(stringArg()),
         schoolId: nonNull(intArg()),
       },
-      resolve(parent, args, context) {
-        const { firstName, lastName, email, password, schoolId } = args;
+      async resolve(parent, args, context) {
+        const { firstName, lastName, email, password, schoolId, username } = args;
         // TODO: hash password
         // TODO: session storage
+        const user = await context.prisma.user.create({
+          data: {
+            email,
+            first_name: firstName,
+            last_name: lastName,
+            password,
+            school_id: schoolId,
+            username,
+          },
+        });
+        const school = await context.prisma.school.findUnique({ where: { id: user.school_id } });
+
+        return {
+          username: user.username,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+          school,
+        };
+
         throw new Error('register resolver not implemented');
       },
     });
@@ -166,7 +186,7 @@ export const sessions = extendType({
           .findMany({
             where: { tutor_name: args.tutorName },
           })
-          .then((s) =>
+          .then((s: any) =>
             s.map(async (session: PrismaSession) => {
               const student = await context.prisma.user.findUnique({
                 where: {
