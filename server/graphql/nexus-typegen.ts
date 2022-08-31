@@ -32,10 +32,8 @@ export interface NexusGenObjects {
   Session: {
     // root type
     id: number; // Int!
-    student: NexusGenRootTypes['User']; // User!
     subject?: NexusGenRootTypes['Subject'] | null; // Subject
     timestamp: number; // Int!
-    tutor: NexusGenRootTypes['User']; // User!
   };
   Subject: {
     // root type
@@ -47,8 +45,7 @@ export interface NexusGenObjects {
     email: string; // String!
     first_name: string; // String!
     last_name: string; // String!
-    password: string; // String!
-    school: NexusGenRootTypes['School']; // School!
+    password?: string | null; // String
     username: string; // String!
   };
 }
@@ -66,6 +63,7 @@ export interface NexusGenFieldTypes {
     // field return type
     addSession: NexusGenRootTypes['Session']; // Session!
     deleteSession: NexusGenRootTypes['Session']; // Session!
+    login: NexusGenRootTypes['User']; // User!
     register: NexusGenRootTypes['User']; // User!
     schedule: NexusGenRootTypes['Session']; // Session!
   };
@@ -83,7 +81,7 @@ export interface NexusGenFieldTypes {
   Session: {
     // field return type
     id: number; // Int!
-    student: NexusGenRootTypes['User']; // User!
+    student: NexusGenRootTypes['User'] | null; // User
     subject: NexusGenRootTypes['Subject'] | null; // Subject
     timestamp: number; // Int!
     tutor: NexusGenRootTypes['User']; // User!
@@ -98,7 +96,7 @@ export interface NexusGenFieldTypes {
     email: string; // String!
     first_name: string; // String!
     last_name: string; // String!
-    password: string; // String!
+    password: string | null; // String
     school: NexusGenRootTypes['School']; // School!
     username: string; // String!
   };
@@ -109,6 +107,7 @@ export interface NexusGenFieldTypeNames {
     // field return type name
     addSession: 'Session';
     deleteSession: 'Session';
+    login: 'User';
     register: 'User';
     schedule: 'Session';
   };
@@ -153,11 +152,16 @@ export interface NexusGenArgTypes {
       // args
       subjectId: number; // Int!
       timestamp: number; // Int!
-      tutor: string; // String!
+      tutorName: string; // String!
     };
     deleteSession: {
       // args
       sessionId: number; // Int!
+    };
+    login: {
+      // args
+      password: string; // String!
+      username: string; // String!
     };
     register: {
       // args

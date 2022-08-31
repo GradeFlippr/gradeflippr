@@ -1,3 +1,4 @@
+import { Session as PrismaSession } from '@prisma/client';
 import { extendType, intArg, nonNull, objectType, stringArg } from 'nexus';
 
 export const Subject = objectType({
@@ -13,7 +14,7 @@ export const subjects = extendType({
   definition(t) {
     t.nonNull.list.nonNull.field('subjects', {
       type: 'Subject',
-      resolve(parent, args, context, info) {
+      resolve(parent, args, context) {
         return context.prisma.subject.findMany();
       },
     });
@@ -33,7 +34,7 @@ export const schools = extendType({
   definition(t) {
     t.nonNull.list.nonNull.field('schools', {
       type: 'School',
-      resolve(parent, args, context, info) {
+      resolve(parent, args, context) {
         return context.prisma.school.findMany();
       },
     });
@@ -46,9 +47,23 @@ export const User = objectType({
     t.nonNull.string('first_name');
     t.nonNull.string('last_name');
     t.nonNull.string('username');
-    t.nonNull.string('password');
+    t.string('password');
     t.nonNull.string('email');
-    t.nonNull.field('school', { type: School });
+    t.nonNull.field('school', {
+      type: School,
+      async resolve(parent, args, context) {
+        const school = await context.prisma.user
+          .findUnique({
+            where: { username: parent.username },
+          })
+          .school();
+        if (!school) {
+          throw new Error('Bad Data');
+        }
+
+        return school;
+      },
+    });
   },
 });
 
@@ -69,6 +84,7 @@ export const register = extendType({
         const { firstName, lastName, email, password, schoolId } = args;
         // TODO: hash password
         // TODO: session storage
+        throw new Error('register resolver not implemented');
       },
     });
   },
@@ -77,16 +93,38 @@ export const register = extendType({
 export const login = extendType({
   type: 'Mutation',
   definition(t) {
-    t.nonNull.field('register', {
+    t.nonNull.field('login', {
       type: 'User',
       args: {
         username: nonNull(stringArg()),
         password: nonNull(stringArg()),
       },
-      resolve(parent, args, context) {
-        const { firstName, lastName, email, password, schoolId } = args;
+      async resolve(parent, args, context) {
+        const { username, password } = args;
+
         // TODO: hash password
         // TODO: session storage
+
+        const hashedPassword = password;
+        const user = await context.prisma.user.findFirst({
+          where: {
+            username,
+            password: hashedPassword,
+          },
+        });
+
+        // TODO: throw a better error.
+        if (!user) throw new Error('Invalid login');
+
+        const school = await context.prisma.school.findUnique({ where: { id: user.school_id } });
+
+        return {
+          username: user.username,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+          school,
+        };
       },
     });
   },
@@ -98,8 +136,20 @@ export const Session = objectType({
     t.nonNull.int('id');
     t.nonNull.int('timestamp');
     t.field('subject', { type: Subject });
-    t.nonNull.field('tutor', { type: User });
-    t.nonNull.field('student', { type: User });
+    t.nonNull.field('tutor', {
+      type: User,
+      async resolve(parent, args, context) {
+        const tutor = await context.prisma.session.findUnique({ where: { id: parent.id } }).tutor();
+        if (!tutor) throw new Error('Invalid session: Missing tutor info on session');
+        return tutor;
+      },
+    });
+    t.field('student', {
+      type: User,
+      resolve(parent, args, context) {
+        return context.prisma.session.findUnique({ where: { id: parent.id } }).student();
+      },
+    });
   },
 });
 
@@ -111,8 +161,37 @@ export const sessions = extendType({
       args: {
         tutorName: nonNull(stringArg()),
       },
-      resolve(parent, args, context, info) {
-        context.prisma.session.findMany({ where: { tutor_name: args.tutorName } });
+      async resolve(parent, args, context) {
+        return context.prisma.session
+          .findMany({
+            where: { tutor_name: args.tutorName },
+          })
+          .then((s) =>
+            s.map(async (session: PrismaSession) => {
+              const student = await context.prisma.user.findUnique({
+                where: {
+                  username: args.tutorName, // FIXME: replace with student name
+                },
+              });
+
+              const tutor = await context.prisma.user.findUnique({
+                where: {
+                  username: args.tutorName,
+                },
+              });
+
+              return {
+                id: session.id,
+                timestamp: new Date(session.timestamp).valueOf(),
+                student,
+                tutor,
+                subject: {
+                  id: 123,
+                  name: 'test',
+                },
+              };
+            })
+          );
       },
     });
   },
@@ -124,19 +203,36 @@ export const addSession = extendType({
     t.nonNull.field('addSession', {
       type: 'Session',
       args: {
-        tutor: nonNull(stringArg()),
+        tutorName: nonNull(stringArg()),
         subjectId: nonNull(intArg()),
         timestamp: nonNull(intArg()),
       },
-      resolve(parent, args, context) {
-        const { tutor, subjectId, timestamp } = args;
-        return context.prisma.session.create({
+      async resolve(parent, args, context) {
+        const { tutorName, subjectId, timestamp } = args;
+        const session = await context.prisma.session.create({
           data: {
-            tutor_name: tutor,
+            tutor_name: tutorName,
             subject_id: subjectId,
             timestamp: new Date(timestamp),
           },
         });
+
+        const tutor = await context.prisma.user.findUnique({
+          where: {
+            username: args.tutorName, // FIXME: replace with student name
+          },
+        });
+
+        return {
+          id: session.id,
+          timestamp: new Date(session.timestamp).valueOf(),
+          student: null,
+          tutor,
+          subject: {
+            id: 123,
+            name: 'test',
+          },
+        };
       },
     });
   },
@@ -150,9 +246,39 @@ export const deleteSession = extendType({
       args: {
         sessionId: nonNull(intArg()),
       },
-      resolve(parent, args, context) {
-        const { firstName, lastName, email, password, schoolId } = args;
+      async resolve(parent, args, context) {
         // TODO: verify the user deleting the session is authorized to do so
+        const session = await context.prisma.session.delete({ where: { id: args.sessionId } });
+
+        const tutor = await context.prisma.user.findUnique({
+          where: {
+            username: session.tutor_name, // FIXME: replace with student name
+          },
+        });
+
+        const student = session.student_name
+          ? await context.prisma.user.findUnique({
+              where: {
+                username: session.student_name, // FIXME: replace with student name
+              },
+            })
+          : null;
+
+        const subject = session.subject_id
+          ? await context.prisma.subject.findUnique({
+              where: {
+                id: Number(session.subject_id),
+              },
+            })
+          : null;
+
+        return {
+          id: session.id,
+          timestamp: new Date(session.timestamp).valueOf(),
+          student,
+          tutor,
+          subject,
+        };
       },
     });
   },
@@ -168,7 +294,41 @@ export const schedule = extendType({
         student: nonNull(stringArg()),
         subject: nonNull(stringArg()),
       },
-      resolve(parent, args, context) {},
+      async resolve(parent, args, context) {
+        const session = await context.prisma.session.update({
+          where: { id: args.sessionId },
+          data: {
+            student_name: args.student,
+            subject_id: Number(args.subject),
+          },
+        });
+
+        const tutor = await context.prisma.user.findUnique({
+          where: {
+            username: session.tutor_name, // FIXME: replace with student name
+          },
+        });
+
+        const student = await context.prisma.user.findUnique({
+          where: {
+            username: args.student, // FIXME: replace with student name
+          },
+        });
+
+        const subject = await context.prisma.subject.findUnique({
+          where: {
+            id: Number(args.subject),
+          },
+        });
+
+        return {
+          id: session.id,
+          timestamp: new Date(session.timestamp).valueOf(),
+          student,
+          tutor,
+          subject,
+        };
+      },
     });
   },
 });

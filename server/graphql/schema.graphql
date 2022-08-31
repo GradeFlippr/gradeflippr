@@ -3,8 +3,9 @@
 
 
 type Mutation {
-  addSession(subjectId: Int!, timestamp: Int!, tutor: String!): Session!
+  addSession(subjectId: Int!, timestamp: Int!, tutorName: String!): Session!
   deleteSession(sessionId: Int!): Session!
+  login(password: String!, username: String!): User!
   register(email: String!, firstName: String!, lastName: String!, password: String!, schoolId: Int!, username: String!): User!
   schedule(sessionId: Int!, student: String!, subject: String!): Session!
 }
@@ -22,7 +23,7 @@ type School {
 
 type Session {
   id: Int!
-  student: User!
+  student: User
   subject: Subject
   timestamp: Int!
   tutor: User!
@@ -37,7 +38,7 @@ type User {
   email: String!
   first_name: String!
   last_name: String!
-  password: String!
+  password: String
   school: School!
   username: String!
 }
