@@ -12,10 +12,7 @@ export const UnprotectedLayout = () => {
   }
   return (
     <div>
-      <AppBar
-        pages={[
-        ]}
-      />
+      <AppBar pages={[]} />
       {outlet}
     </div>
   );

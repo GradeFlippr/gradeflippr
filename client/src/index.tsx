@@ -8,13 +8,12 @@ import { AuthProvider } from './hooks/useAuth';
 
 import App from './App';
 
-
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <App/>
+        <App />
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>
