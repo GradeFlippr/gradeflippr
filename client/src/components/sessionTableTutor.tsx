@@ -2,19 +2,50 @@ import * as React from 'react';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'studentName', headerName: 'Student Name', width: 130 },
-  { field: 'subject', headerName: 'Subject', width: 130 },
+  {
+    field: 'id',
+    headerName: 'ID',
+    // width: 70,
+    headerClassName: 'super-app-theme--header',
+    headerAlign: 'center',
+    align: 'center',
+    flex: 1,
+  },
+  {
+    field: 'studentName',
+    headerName: 'Student Name',
+    // width: 130,
+    headerClassName: 'super-app-theme--header',
+    headerAlign: 'center',
+    align: 'center',
+    flex: 1,
+  },
+  {
+    field: 'subject',
+    headerName: 'Subject',
+    // width: 130,
+    headerClassName: 'super-app-theme--header',
+    headerAlign: 'center',
+    align: 'center',
+    flex: 1,
+  },
   {
     field: 'date',
     headerName: 'Date',
-    width: 160,
-    align: 'left',
+    // width: 160,
+    headerClassName: 'super-app-theme--header',
+    headerAlign: 'center',
+    align: 'center',
+    flex: 1,
   },
   {
     field: 'time',
     headerName: 'Time',
-    width: 90,
+    // width: 90,
+    headerClassName: 'super-app-theme--header',
+    headerAlign: 'center',
+    align: 'center',
+    flex: 1,
   },
 ];
 
@@ -44,7 +75,25 @@ interface SessionTableTutorProps {
 export default function DataTable(props: SessionTableTutorProps) {
   return (
     <div style={{ height: 400, width: '100%' }}>
-      <DataGrid rows={rows} columns={columns} pageSize={5} rowsPerPageOptions={[5]} />
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={10}
+        rowsPerPageOptions={[5]}
+        sx={{
+          boxShadow: 2,
+          color: 'black',
+          // border: 4,
+          // borderColor: '#2e75b5',
+          '& .MuiDataGrid-cell:hover': {
+            color: '#00b0f0',
+          },
+          '& .super-app-theme--header': {
+            backgroundColor: '#2e75b5',
+            color: 'white',
+          },
+        }}
+      />
     </div>
   );
 }

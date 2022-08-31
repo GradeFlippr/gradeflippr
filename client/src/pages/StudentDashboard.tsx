@@ -15,14 +15,14 @@ export const StudentDashboard = () => {
     <>
       <Box m={1} display="flex" justifyContent="space-between">
         <Typography variant="h6" component="h1" align="left">
-          Upcoming Sessions
+          <strong>Upcoming Sessions</strong>
         </Typography>
 
         <Button
           onClick={buttonHandler}
           type="submit"
           variant="contained"
-          color="success"
+          color="primary"
           sx={{ bgcolor: '#3F48CC' }}
         >
           Schedule a new session

@@ -11,28 +11,55 @@ const scheduleButton = () => {
 };
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'tutorName', headerName: 'Tutor Name', width: 200 },
-  { field: 'subject', headerName: 'Subject', width: 130 },
+  {
+    field: 'id',
+    headerName: 'ID',
+    headerClassName: 'super-app-theme--header',
+    headerAlign: 'center',
+    align: 'center',
+    flex: 1,
+  },
+  {
+    field: 'tutorName',
+    headerName: 'Tutor Name',
+    flex: 1,
+    headerClassName: 'super-app-theme--header',
+    headerAlign: 'center',
+    align: 'center',
+  },
+  {
+    field: 'subject',
+    headerName: 'Subject',
+    flex: 1,
+    headerClassName: 'super-app-theme--header',
+    headerAlign: 'center',
+    align: 'center',
+  },
   {
     field: 'date',
     headerName: 'Date',
-    align: 'left',
-    width: 160,
+    align: 'center',
+    flex: 1,
+    headerClassName: 'super-app-theme--header',
+    headerAlign: 'center',
   },
   {
     field: 'time',
     headerName: 'Time',
-
-    width: 120,
+    flex: 1,
+    headerClassName: 'super-app-theme--header',
+    headerAlign: 'center',
+    align: 'center',
     //   valueGetter: (params: GridValueGetterParams) =>
     //     `${params.row.studentName || ''} ${params.row.subject || ''} ${params.row.date || ''} ${params.row.time || ''}`,
   },
   {
     field: 'select',
     headerName: 'Schedule',
-    width: 180,
-    align: 'left',
+    flex: 1,
+    align: 'center',
+    headerClassName: 'super-app-theme--header',
+    headerAlign: 'center',
     renderCell: scheduleButton,
   },
 ];
@@ -64,7 +91,25 @@ const rows = [
 export default function DataTable() {
   return (
     <div style={{ height: 400, width: '100%' }}>
-      <DataGrid rows={rows} columns={columns} pageSize={10} rowsPerPageOptions={[5]} />
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={10}
+        rowsPerPageOptions={[5]}
+        sx={{
+          boxShadow: 2,
+          color: 'black',
+          // border: 4,
+          // borderColor: '#2e75b5',
+          '& .MuiDataGrid-cell:hover': {
+            color: '#00b0f0',
+          },
+          '& .super-app-theme--header': {
+            backgroundColor: '#2e75b5',
+            color: 'white',
+          },
+        }}
+      />
     </div>
   );
 }
