@@ -15,7 +15,13 @@ export const TutorDashboard = () => {
           Upcoming Sessions
         </Typography>
 
-        <Button onClick={buttonHandler} type="submit" variant="contained" color="success">
+        <Button
+          onClick={buttonHandler}
+          type="submit"
+          variant="contained"
+          color="primary"
+          sx={{ bgcolor: '#3F48CC' }}
+        >
           Update Availability
         </Button>
       </Box>

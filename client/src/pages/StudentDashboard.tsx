@@ -29,7 +29,7 @@ export const StudentDashboard = () => {
         </Button>
       </Box>
       <br />
-      <SessionTableStudent title="Tutor Dashboard" />
+      <SessionTableStudent title="Student Dashboard" />
     </>
   );
 };

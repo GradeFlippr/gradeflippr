@@ -11,8 +11,6 @@ const cancelButton = () => {
         color="primary"
         size="small"
         style={{ marginLeft: 16 }}
-        // onClick={() => {
-        // }}
         sx={{ bgcolor: '#3F48CC' }}
       >
         Cancel
@@ -22,24 +20,63 @@ const cancelButton = () => {
 };
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'tutorName', headerName: 'Tutor Name', width: 130 },
-  { field: 'subject', headerName: 'Subject', width: 130 },
+  {
+    field: 'id',
+    headerName: 'ID',
+    // width: 70,
+    headerClassName: 'super-app-theme--header',
+    headerAlign: 'center',
+    align: 'center',
+    flex: 1,
+  },
+  {
+    field: 'tutorName',
+    headerName: 'Tutor Name',
+    // width: 130,
+    headerClassName: 'super-app-theme--header',
+    headerAlign: 'center',
+    align: 'center',
+    flex: 1,
+  },
+  {
+    field: 'subject',
+    headerName: 'Subject',
+    // width: 130,
+    headerClassName: 'super-app-theme--header',
+    headerAlign: 'center',
+    align: 'center',
+    flex: 1,
+  },
   {
     field: 'date',
     headerName: 'Date',
-    align: 'left',
-    width: 160,
+    // width: 160,
+    headerClassName: 'super-app-theme--header',
+    headerAlign: 'center',
+    align: 'center',
+    flex: 1,
   },
   {
     field: 'time',
     headerName: 'Time',
-
-    width: 120,
+    // width: 120,
+    headerClassName: 'super-app-theme--header',
+    headerAlign: 'center',
+    align: 'center',
+    flex: 1,
     //   valueGetter: (params: GridValueGetterParams) =>
     //     `${params.row.studentName || ''} ${params.row.subject || ''} ${params.row.date || ''} ${params.row.time || ''}`,
   },
-  { field: 'edit', headerName: 'Actions', width: 130, align: 'left', renderCell: cancelButton },
+  {
+    field: 'edit',
+    headerName: 'Actions',
+    // width: 130,
+    headerClassName: 'super-app-theme--header',
+    headerAlign: 'center',
+    align: 'center',
+    flex: 1,
+    renderCell: cancelButton,
+  },
   // { field: 'cancel', headerName: 'Actions', width: 130, align: 'left', renderCell: cancelButton },
 ];
 
@@ -61,7 +98,25 @@ interface SessionTableStudentProps {
 export default function DataTable(props: SessionTableStudentProps) {
   return (
     <div style={{ height: 400, width: '100%' }}>
-      <DataGrid rows={rows} columns={columns} pageSize={5} rowsPerPageOptions={[5]} />
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
+        sx={{
+          boxShadow: 2,
+          color: 'black',
+          // border: 4,
+          // borderColor: '#2e75b5',
+          '& .MuiDataGrid-cell:hover': {
+            color: '#00b0f0',
+          },
+          '& .super-app-theme--header': {
+            backgroundColor: '#2e75b5',
+            color: 'white',
+          },
+        }}
+      />
     </div>
   );
 }
