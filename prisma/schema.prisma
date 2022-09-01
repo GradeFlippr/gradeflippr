@@ -3,19 +3,24 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DB_URL")
 }
 
 model Role {
   id   Int    @id(map: "roles_pkey") @default(autoincrement())
   role String @unique(map: "roles_unique_role") @db.VarChar(50)
+
+  @@map("roles")
 }
 
 model School {
   id   Int    @id(map: "schools_pkey") @default(autoincrement()) @map("school_id")
   name String @unique(map: "schools_unique_schoole_name") @map("school_name") @db.VarChar(255)
   User User[]
+
+  @@map("schools")
 }
 
 model Session {
@@ -27,6 +32,8 @@ model Session {
   subject      Subject? @relation(fields: [subject_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "sessions_fk0_subject_id")
   tutor        User     @relation("Session_tutor_nameToUser", fields: [tutor_name], references: [username], onDelete: NoAction, onUpdate: NoAction, map: "sessions_fk1_tutor_name")
   student      User?    @relation("Session_student_nameToUser", fields: [student_name], references: [username], onDelete: NoAction, onUpdate: NoAction, map: "sessions_fk2_student_name")
+
+  @@map("sessions")
 }
 
 model User {
@@ -39,10 +46,14 @@ model User {
   school     School    @relation(fields: [school_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_fk0")
   tutor      Session[] @relation("Session_tutor_nameToUser")
   student    Session[] @relation("Session_student_nameToUser")
+
+  @@map("users")
 }
 
 model Subject {
   id      Int       @id(map: "subjects_pkey") @default(autoincrement()) @map("subject_id")
   name    String    @map("subject_name") @db.VarChar
   Session Session[]
+
+  @@map("subjects")
 }
