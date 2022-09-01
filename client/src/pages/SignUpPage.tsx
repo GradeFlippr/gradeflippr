@@ -59,14 +59,13 @@ export default function SignUpPage() {
   const [lastName, setLastName] = React.useState('');
   const [firstName, setFirstName] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [school, setSchool] = React.useState('');
   const [username, setUsername] = React.useState('');
+  const [school, setSchool] = React.useState('');
+  const [role, setRole] = React.useState('');
 
   const handleChange = (event: SelectChangeEvent) => {
     setSchool(event.target.value as string);
   };
-
-  const [role, setRole] = React.useState('');
 
   const handleChangeRole = (event: SelectChangeEvent) => {
     setRole(event.target.value as string);
@@ -81,8 +80,6 @@ export default function SignUpPage() {
       login(registeredUser.username);
     }
   }, [registeredUser]);
-
-  // const signupMutation = (test: any) => { }
 
   const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log('clicked sign up');
@@ -165,13 +162,13 @@ export default function SignUpPage() {
                     label="School"
                     onChange={handleChange}
                   >
-                    <MenuItem>High School - Alhambra</MenuItem>
-                    <MenuItem>High School - Bayside </MenuItem>
-                    <MenuItem>High School - East Ridge</MenuItem>
-                    <MenuItem>High School - Rydell </MenuItem>
-                    <MenuItem>University - Harvard </MenuItem>
-                    <MenuItem>University - Stanford </MenuItem>
-                    <MenuItem>University - Yale </MenuItem>
+                    <MenuItem value="1">High School - Alhambra</MenuItem>
+                    <MenuItem value="2">High School - Bayside </MenuItem>
+                    <MenuItem value="3">High School - East Ridge</MenuItem>
+                    <MenuItem value="4">High School - Rydell </MenuItem>
+                    <MenuItem value="5">University - Harvard </MenuItem>
+                    <MenuItem value="6">University - Stanford </MenuItem>
+                    <MenuItem value="7">University - Yale </MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -185,8 +182,8 @@ export default function SignUpPage() {
                     label="Role"
                     onChange={handleChangeRole}
                   >
-                    <MenuItem>Tutor</MenuItem>
-                    <MenuItem>Student</MenuItem>
+                    <MenuItem value="1">Tutor</MenuItem>
+                    <MenuItem value="2">Student</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>

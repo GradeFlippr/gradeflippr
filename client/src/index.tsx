@@ -10,7 +10,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client
 import App from './App';
 
 const client = new ApolloClient({
-  uri: 'localhost:3000',
+  uri: 'http://localhost:3000',
   cache: new InMemoryCache(),
 });
 
