@@ -84,27 +84,35 @@ export const register = extendType({
         const { firstName, lastName, email, password, schoolId, username } = args;
         // TODO: hash password
         // TODO: session storage
-        const user = await context.prisma.user.create({
-          data: {
-            email,
-            first_name: firstName,
-            last_name: lastName,
-            password,
-            school_id: schoolId,
-            username,
-          },
-        });
-        const school = await context.prisma.school.findUnique({ where: { id: user.school_id } });
 
-        return {
-          username: user.username,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          email: user.email,
-          school,
-        };
+        try {
+          const user = await context.prisma.user.create({
+            data: {
+              email,
+              first_name: firstName,
+              last_name: lastName,
+              password,
+              school_id: schoolId,
+              username,
+            },
+          });
 
-        throw new Error('register resolver not implemented');
+          const school = await context.prisma.school.findUnique({ where: { id: user.school_id } });
+          if (!school)
+            throw new Error(
+              `[server]: ERROR: User ${user.username} missing school ${user.school_id}`
+            );
+
+          return {
+            username: user.username,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            school,
+          };
+        } catch (err) {
+          throw new Error(`[server]: ERROR: ${err}`);
+        }
       },
     });
   },

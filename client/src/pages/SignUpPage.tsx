@@ -89,7 +89,7 @@ export default function SignUpPage() {
       lastName,
       password,
       username,
-      school,
+      schoolId: Number(school),
     };
     signupMutation({ variables: mutationArgs });
     console.log(`CURR USER: ${user}`);

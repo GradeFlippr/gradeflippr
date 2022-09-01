@@ -5,12 +5,12 @@ import reportWebVitals from './reportWebVitals';
 import { StrictMode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './hooks/useAuth';
-import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 import App from './App';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3000',
+  uri: `http://localhost:${process.env.REACT_APP_PORT}`,
   cache: new InMemoryCache(),
 });
 
