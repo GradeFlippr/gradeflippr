@@ -54,22 +54,35 @@ export default function SignUpPage() {
       password: data.get('password'),
     });
   };
+
   const [email, setEmail] = React.useState('');
   const [lastName, setLastName] = React.useState('');
   const [firstName, setFirstName] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [school, setSchool] = React.useState('');
   const [username, setUsername] = React.useState('');
+
   const handleChange = (event: SelectChangeEvent) => {
     setSchool(event.target.value as string);
   };
+
   const [role, setRole] = React.useState('');
+
   const handleChangeRole = (event: SelectChangeEvent) => {
     setRole(event.target.value as string);
   };
+
   const { user, login } = useAuth();
+
   const [signupMutation, { data: registeredUser, loading, error }] = useMutation(register);
-  React.useEffect(() => login(registeredUser.username), [registeredUser]);
+
+  React.useEffect(() => {
+    if (registeredUser) {
+      login(registeredUser.username);
+    }
+  }, [registeredUser]);
+
+  // const signupMutation = (test: any) => { }
 
   const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log('clicked sign up');
