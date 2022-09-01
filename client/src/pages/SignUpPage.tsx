@@ -38,6 +38,9 @@ const register = gql`
       roleId: $roleId
     ) {
       username
+      roles {
+        role
+      }
     }
   }
 `;
@@ -55,15 +58,6 @@ const GET_SCHOOLS_QUERY = gql`
  */
 
 export default function SignUpPage() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
-
   const [email, setEmail] = React.useState('');
   const [lastName, setLastName] = React.useState('');
   const [firstName, setFirstName] = React.useState('');
@@ -80,24 +74,20 @@ export default function SignUpPage() {
     setRole(event.target.value);
   };
 
-  const { user, login } = useAuth();
+  const { login } = useAuth();
 
-  const [signupMutation, { data: registeredUser, loading, error }] = useMutation(register);
+  const [signupMutation, { data: registeredUser }] = useMutation(register);
 
   const { data: schoolData } = useQuery(GET_SCHOOLS_QUERY);
 
   React.useEffect(() => {
-    console.log(schoolData);
-  }, [schoolData]);
-
-  React.useEffect(() => {
     if (registeredUser) {
-      login(registeredUser.username);
+      login(registeredUser.register);
     }
   }, [registeredUser]);
 
-  const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('clicked sign up');
+  const handleRegister = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const mutationArgs = {
       email,
       firstName,
@@ -108,7 +98,6 @@ export default function SignUpPage() {
       roleId: Number(role),
     };
     signupMutation({ variables: mutationArgs });
-    console.log(`CURR USER: ${user}`);
   };
 
   return (
@@ -129,7 +118,7 @@ export default function SignUpPage() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" noValidate onSubmit={handleRegister} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -234,13 +223,7 @@ export default function SignUpPage() {
                 />
               </Grid>
             </Grid>
-            <Button
-              onClick={buttonHandler}
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">

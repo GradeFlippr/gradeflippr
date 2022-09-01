@@ -1,1 +1,2 @@
 server/graphql/nexus-typegen.ts
+./client/node_modules/*

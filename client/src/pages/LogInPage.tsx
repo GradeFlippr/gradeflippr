@@ -34,7 +34,6 @@ const LOGIN_MUTATION = gql`
 export default function LogInPage() {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
-  // const navigate = useNavigate();
 
   const { login } = useAuth();
 
@@ -51,8 +50,7 @@ export default function LogInPage() {
   };
 
   React.useEffect(() => {
-    if (loggedInUser) login(loggedInUser.username);
-    // navigate('/dashboard')
+    if (loggedInUser) login(loggedInUser.login);
   }, [loggedInUser]);
 
   return (
