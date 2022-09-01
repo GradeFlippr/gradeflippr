@@ -14,7 +14,8 @@
     "create-schema": "ts-node --esm --transpile-only server/graphql/schema",
     "db-init": "prisma migrate dev --name 'init'",
     "introspect": "prisma db pull",
-    "prisma-client": "prisma generate"
+    "prisma-client": "prisma generate",
+    "prisma-migrate": "prisma migrate dev --name "
   },
   "repository": {
     "type": "git",

@@ -30,6 +30,10 @@ export interface NexusGenScalars {
 export interface NexusGenObjects {
   Mutation: {};
   Query: {};
+  Role: { // root type
+    id: number; // Int!
+    role: string; // String!
+  }
   School: { // root type
     id: number; // Int!
     name: string; // String!
@@ -45,8 +49,8 @@ export interface NexusGenObjects {
   }
   User: { // root type
     email: string; // String!
-    first_name: string; // String!
-    last_name: string; // String!
+    firstName: string; // String!
+    lastName: string; // String!
     password?: string | null; // String
     username: string; // String!
   }
@@ -75,6 +79,10 @@ export interface NexusGenFieldTypes {
     sessions: NexusGenRootTypes['Session'][]; // [Session!]!
     subjects: NexusGenRootTypes['Subject'][]; // [Subject!]!
   }
+  Role: { // field return type
+    id: number; // Int!
+    role: string; // String!
+  }
   School: { // field return type
     id: number; // Int!
     name: string; // String!
@@ -92,9 +100,10 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     email: string; // String!
-    first_name: string; // String!
-    last_name: string; // String!
+    firstName: string; // String!
+    lastName: string; // String!
     password: string | null; // String
+    roles: NexusGenRootTypes['Role'][]; // [Role!]!
     school: NexusGenRootTypes['School']; // School!
     username: string; // String!
   }
@@ -113,6 +122,10 @@ export interface NexusGenFieldTypeNames {
     sessions: 'Session'
     subjects: 'Subject'
   }
+  Role: { // field return type name
+    id: 'Int'
+    role: 'String'
+  }
   School: { // field return type name
     id: 'Int'
     name: 'String'
@@ -130,9 +143,10 @@ export interface NexusGenFieldTypeNames {
   }
   User: { // field return type name
     email: 'String'
-    first_name: 'String'
-    last_name: 'String'
+    firstName: 'String'
+    lastName: 'String'
     password: 'String'
+    roles: 'Role'
     school: 'School'
     username: 'String'
   }
@@ -157,6 +171,7 @@ export interface NexusGenArgTypes {
       firstName: string; // String!
       lastName: string; // String!
       password: string; // String!
+      roleId: number; // Int!
       schoolId: number; // Int!
       username: string; // String!
     }
