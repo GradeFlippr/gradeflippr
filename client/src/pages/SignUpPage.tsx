@@ -15,10 +15,35 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Login } from '@mui/icons-material';
+import { Email, Login } from '@mui/icons-material';
 import { useAuth } from '../hooks/useAuth';
+import { gql, useQuery, useMutation } from '@apollo/client';
 
 const theme = createTheme();
+const register = gql`
+  mutation registerUser(
+    $email: String!
+    $firstName: String!
+    $lastName: String!
+    $password: String!
+    $schoolId: Int!
+    $username: String!
+  ) {
+    register(
+      email: $email
+      firstName: $firstName
+      lastName: $lastName
+      password: $password
+      schoolId: $schoolId
+      username: $username
+    ) {
+      username
+    }
+  }
+`;
+/**
+ * email: String!, firstName: String!, lastName: String!, password: String!, schoolId: Int!, username: String!
+ */
 
 export default function SignUpPage() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -29,21 +54,44 @@ export default function SignUpPage() {
       password: data.get('password'),
     });
   };
+
+  const [email, setEmail] = React.useState('');
+  const [lastName, setLastName] = React.useState('');
+  const [firstName, setFirstName] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [username, setUsername] = React.useState('');
   const [school, setSchool] = React.useState('');
+  const [role, setRole] = React.useState('');
+
   const handleChange = (event: SelectChangeEvent) => {
     setSchool(event.target.value as string);
   };
-  const [role, setRole] = React.useState('');
+
   const handleChangeRole = (event: SelectChangeEvent) => {
     setRole(event.target.value as string);
   };
+
   const { user, login } = useAuth();
+
+  const [signupMutation, { data: registeredUser, loading, error }] = useMutation(register);
+
+  React.useEffect(() => {
+    if (registeredUser) {
+      login(registeredUser.username);
+    }
+  }, [registeredUser]);
+
   const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log('clicked sign up');
-    //MAKE DB CALL FOR SIGN UP, THEN IF SUCCESSFUL, CALL 'login' FROM useAuth then Redirect to dashboard/student. If SignUp fails, prompt user to retry
-
-    //TEST LOGIN CALL BELOW, REPLACE WITH CALL THAT PASSES VALID DB RESPONSE LATER
-    login('userA');
+    const mutationArgs = {
+      email,
+      firstName,
+      lastName,
+      password,
+      username,
+      school,
+    };
+    signupMutation({ variables: mutationArgs });
     console.log(`CURR USER: ${user}`);
   };
 
@@ -76,6 +124,8 @@ export default function SignUpPage() {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  value={firstName}
+                  onChange={(event) => setFirstName(event.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -86,6 +136,8 @@ export default function SignUpPage() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  value={lastName}
+                  onChange={(event) => setLastName(event.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -96,6 +148,8 @@ export default function SignUpPage() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -108,13 +162,13 @@ export default function SignUpPage() {
                     label="School"
                     onChange={handleChange}
                   >
-                    <MenuItem>High School - Alhambra</MenuItem>
-                    <MenuItem>High School - Bayside </MenuItem>
-                    <MenuItem>High School - East Ridge</MenuItem>
-                    <MenuItem>High School - Rydell </MenuItem>
-                    <MenuItem>University - Harvard </MenuItem>
-                    <MenuItem>University - Stanford </MenuItem>
-                    <MenuItem>University - Yale </MenuItem>
+                    <MenuItem value="1">High School - Alhambra</MenuItem>
+                    <MenuItem value="2">High School - Bayside </MenuItem>
+                    <MenuItem value="3">High School - East Ridge</MenuItem>
+                    <MenuItem value="4">High School - Rydell </MenuItem>
+                    <MenuItem value="5">University - Harvard </MenuItem>
+                    <MenuItem value="6">University - Stanford </MenuItem>
+                    <MenuItem value="7">University - Yale </MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -128,8 +182,8 @@ export default function SignUpPage() {
                     label="Role"
                     onChange={handleChangeRole}
                   >
-                    <MenuItem>Tutor</MenuItem>
-                    <MenuItem>Student</MenuItem>
+                    <MenuItem value="1">Tutor</MenuItem>
+                    <MenuItem value="2">Student</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -141,6 +195,8 @@ export default function SignUpPage() {
                   label="Username"
                   name="username"
                   autoComplete="username"
+                  value={username}
+                  onChange={(event) => setUsername(event.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -152,6 +208,8 @@ export default function SignUpPage() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
                 />
               </Grid>
             </Grid>

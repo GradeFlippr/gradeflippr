@@ -5,16 +5,24 @@ import reportWebVitals from './reportWebVitals';
 import { StrictMode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './hooks/useAuth';
+import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
 
 import App from './App';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:3000',
+  cache: new InMemoryCache(),
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <ApolloProvider client={client}>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </ApolloProvider>
     </BrowserRouter>
   </StrictMode>
 );
