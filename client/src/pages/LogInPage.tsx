@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,27 +16,42 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import studentPhoto from '../assets/students.png';
 import { useAuth } from '../hooks/useAuth';
+import { gql, useMutation } from '@apollo/client';
 
 const theme = createTheme();
 
+const LOGIN_MUTATION = gql`
+  mutation loginUser($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      username
+      roles {
+        role
+      }
+    }
+  }
+`;
+
 export default function LogInPage() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
+  const { login } = useAuth();
+
+  const [loginMutation, { data: loggedInUser }] = useMutation(LOGIN_MUTATION);
+
+  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    loginMutation({
+      variables: {
+        username,
+        password,
+      },
     });
   };
-  const { user, login } = useAuth();
-  const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('clicked Sign In');
-    //MAKE CALL TO DB FOR SIGN IN, THEN IF SUCCESSFUL CALL 'login' from useAuth and then Redirect to /dashboard/student. If login fails, prompt user to retry
 
-    //TEST LOGIN CALL BELOW, REPLACE WITH CALL THAT PASSES VALID DB RESPONSE LATER
-    login('userA');
-    console.log(`CURR USER: ${user}`);
-  };
+  React.useEffect(() => {
+    if (loggedInUser) login(loggedInUser.login);
+  }, [loggedInUser]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -72,16 +88,17 @@ export default function LogInPage() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <Box component="form" noValidate onSubmit={handleLogin} sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="username"
+                label="Username"
+                name="username"
                 autoFocus
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
               <TextField
                 margin="normal"
@@ -92,6 +109,8 @@ export default function LogInPage() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
@@ -99,7 +118,6 @@ export default function LogInPage() {
               />
               <Button
                 type="submit"
-                onClick={buttonHandler}
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2, bgcolor: '#3F48CC' }}

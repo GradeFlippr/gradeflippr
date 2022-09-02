@@ -7,7 +7,6 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Link from '@mui/material/Link';
 import { Link as RouterLink } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -15,7 +14,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Email, Login } from '@mui/icons-material';
 import { useAuth } from '../hooks/useAuth';
 import { gql, useQuery, useMutation } from '@apollo/client';
 
@@ -28,6 +26,7 @@ const register = gql`
     $password: String!
     $schoolId: Int!
     $username: String!
+    $roleId: Int!
   ) {
     register(
       email: $email
@@ -36,8 +35,21 @@ const register = gql`
       password: $password
       schoolId: $schoolId
       username: $username
+      roleId: $roleId
     ) {
       username
+      roles {
+        role
+      }
+    }
+  }
+`;
+
+const GET_SCHOOLS_QUERY = gql`
+  query getSchools {
+    schools {
+      id
+      name
     }
   }
 `;
@@ -46,15 +58,6 @@ const register = gql`
  */
 
 export default function SignUpPage() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
-
   const [email, setEmail] = React.useState('');
   const [lastName, setLastName] = React.useState('');
   const [firstName, setFirstName] = React.useState('');
@@ -64,35 +67,37 @@ export default function SignUpPage() {
   const [role, setRole] = React.useState('');
 
   const handleChange = (event: SelectChangeEvent) => {
-    setSchool(event.target.value as string);
+    setSchool(event.target.value);
   };
 
   const handleChangeRole = (event: SelectChangeEvent) => {
-    setRole(event.target.value as string);
+    setRole(event.target.value);
   };
 
-  const { user, login } = useAuth();
+  const { login } = useAuth();
 
-  const [signupMutation, { data: registeredUser, loading, error }] = useMutation(register);
+  const [signupMutation, { data: registeredUser }] = useMutation(register);
+
+  const { data: schoolData } = useQuery(GET_SCHOOLS_QUERY);
 
   React.useEffect(() => {
     if (registeredUser) {
-      login(registeredUser.username);
+      login(registeredUser.register);
     }
   }, [registeredUser]);
 
-  const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('clicked sign up');
+  const handleRegister = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const mutationArgs = {
       email,
       firstName,
       lastName,
       password,
       username,
-      school,
+      schoolId: Number(school),
+      roleId: Number(role),
     };
     signupMutation({ variables: mutationArgs });
-    console.log(`CURR USER: ${user}`);
   };
 
   return (
@@ -113,7 +118,7 @@ export default function SignUpPage() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" noValidate onSubmit={handleRegister} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -162,13 +167,18 @@ export default function SignUpPage() {
                     label="School"
                     onChange={handleChange}
                   >
-                    <MenuItem value="1">High School - Alhambra</MenuItem>
+                    {schoolData?.schools.map(({ id, name }: { id: number; name: string }) => (
+                      <MenuItem value={id} key={id}>
+                        {name}
+                      </MenuItem>
+                    ))}
+                    {/* <MenuItem value="1">High School - Alhambra</MenuItem>
                     <MenuItem value="2">High School - Bayside </MenuItem>
                     <MenuItem value="3">High School - East Ridge</MenuItem>
                     <MenuItem value="4">High School - Rydell </MenuItem>
                     <MenuItem value="5">University - Harvard </MenuItem>
                     <MenuItem value="6">University - Stanford </MenuItem>
-                    <MenuItem value="7">University - Yale </MenuItem>
+                    <MenuItem value="7">University - Yale </MenuItem> */}
                   </Select>
                 </FormControl>
               </Grid>
@@ -182,8 +192,8 @@ export default function SignUpPage() {
                     label="Role"
                     onChange={handleChangeRole}
                   >
-                    <MenuItem value="1">Tutor</MenuItem>
-                    <MenuItem value="2">Student</MenuItem>
+                    <MenuItem value="2">Tutor</MenuItem>
+                    <MenuItem value="1">Student</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -213,13 +223,7 @@ export default function SignUpPage() {
                 />
               </Grid>
             </Grid>
-            <Button
-              onClick={buttonHandler}
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">

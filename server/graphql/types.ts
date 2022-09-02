@@ -1,4 +1,4 @@
-import { Prisma, Session as PrismaSession } from '@prisma/client';
+import { Session as PrismaSession } from '@prisma/client';
 import { extendType, intArg, nonNull, objectType, stringArg } from 'nexus';
 
 export const Subject = objectType({
@@ -41,11 +41,19 @@ export const schools = extendType({
   },
 });
 
+export const Role = objectType({
+  name: 'Role',
+  definition(t) {
+    t.nonNull.int('id');
+    t.nonNull.string('role');
+  },
+});
+
 export const User = objectType({
   name: 'User',
   definition(t) {
-    t.nonNull.string('first_name');
-    t.nonNull.string('last_name');
+    t.nonNull.string('firstName');
+    t.nonNull.string('lastName');
     t.nonNull.string('username');
     t.string('password');
     t.nonNull.string('email');
@@ -64,6 +72,22 @@ export const User = objectType({
         return school;
       },
     });
+    t.nonNull.list.nonNull.field('roles', {
+      type: Role,
+      async resolve(parent, args, context) {
+        const roles = await context.prisma.user
+          .findUnique({
+            where: { username: parent.username },
+          })
+          .roles();
+
+        if (!roles) {
+          throw new Error(`[server] ERROR: User ${parent.username} has no roles`);
+        }
+
+        return [...roles];
+      },
+    });
   },
 });
 
@@ -79,32 +103,44 @@ export const register = extendType({
         username: nonNull(stringArg()),
         password: nonNull(stringArg()),
         schoolId: nonNull(intArg()),
+        roleId: nonNull(intArg()),
       },
       async resolve(parent, args, context) {
-        const { firstName, lastName, email, password, schoolId, username } = args;
+        const { firstName, lastName, email, password, schoolId, username, roleId } = args;
         // TODO: hash password
         // TODO: session storage
-        const user = await context.prisma.user.create({
-          data: {
-            email,
-            first_name: firstName,
-            last_name: lastName,
-            password,
-            school_id: schoolId,
-            username,
-          },
-        });
-        const school = await context.prisma.school.findUnique({ where: { id: user.school_id } });
 
-        return {
-          username: user.username,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          email: user.email,
-          school,
-        };
+        try {
+          const user = await context.prisma.user.create({
+            data: {
+              email,
+              first_name: firstName,
+              last_name: lastName,
+              password,
+              school_id: schoolId,
+              username,
+              roles: {
+                connect: [{ id: roleId }],
+              },
+            },
+          });
 
-        throw new Error('register resolver not implemented');
+          const school = await context.prisma.school.findUnique({ where: { id: user.school_id } });
+          if (!school)
+            throw new Error(
+              `[server]: ERROR: User ${user.username} missing school ${user.school_id}`
+            );
+
+          return {
+            username: user.username,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            email: user.email,
+            school,
+          };
+        } catch (err) {
+          throw new Error(`[server]: ERROR: ${err}`);
+        }
       },
     });
   },
@@ -140,8 +176,8 @@ export const login = extendType({
 
         return {
           username: user.username,
-          first_name: user.first_name,
-          last_name: user.last_name,
+          firstName: user.first_name,
+          lastName: user.last_name,
           email: user.email,
           school,
         };

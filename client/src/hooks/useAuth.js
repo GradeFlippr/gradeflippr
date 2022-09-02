@@ -9,8 +9,9 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const login = async (data) => {
+    console.log('loggin in', data);
     setUser(data);
-    navigate('/dashboard/student', { replace: true });
+    navigate(`/dashboard/${data?.roles[0].role.toLowerCase()}`);
   };
 
   const logout = () => {
