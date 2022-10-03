@@ -9,25 +9,18 @@ import { Button } from '@mui/material';
 import userEvent from '@testing-library/user-event';
 import SignUpPage from './pages/SignUpPage';
 
-// const validateInput = (str = "") => str.includes("@")
-
-// describe('signup', () => {
-//   test('validate input function', () => {
-//     const text = 'text@test.com';
-//     expect(validateInput(text)).toBeTruthy();
-//   });
-// });
 describe('full App', () => {
   test('the full app should render/navigate', () => {
     render(<App />, { wrapper: BrowserRouter });
-    expect(screen.getByText(/Sign in/i)).toBeInTheDocument();
+    // const user = userEvent.setup()
+    expect(screen.getByText(/sign in/i)).toBeInTheDocument();
   });
 });
 
 describe('signup page', () => {
   test('the signup page', () => {
     render(<SignUpPage />, { wrapper: BrowserRouter });
-    expect(screen.getByText(/Sign up/i)).toBeInTheDocument();
+    expect(screen.getByText(/sign up/i)).toBeInTheDocument();
   });
 });
 

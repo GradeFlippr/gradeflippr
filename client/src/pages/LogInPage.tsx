@@ -15,7 +15,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import studentPhoto from '../assets/students.png';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth, AuthContext } from '../hooks/useAuth';
 import { gql, useMutation } from '@apollo/client';
 
 const theme = createTheme();
