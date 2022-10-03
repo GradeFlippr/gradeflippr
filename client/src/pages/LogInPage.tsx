@@ -51,7 +51,7 @@ export default function LogInPage() {
 
   React.useEffect(() => {
     if (loggedInUser) login(loggedInUser.login);
-  }, [loggedInUser]);
+  }, [loggedInUser, login]);
 
   return (
     <ThemeProvider theme={theme}>

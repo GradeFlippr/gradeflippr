@@ -21,6 +21,7 @@ export const TutorDashboard = () => {
           variant="contained"
           color="primary"
           sx={{ bgcolor: '#3F48CC' }}
+          data-testid="update-avail"
         >
           Update Availability
         </Button>

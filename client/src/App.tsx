@@ -4,7 +4,6 @@ import './App.css';
 import LoginPage from './pages/LogInPage';
 import { UnprotectedLayout } from './components/UnprotectedLayout';
 import { ProtectedLayout } from './components/ProtectedLayout';
-import { HomePage } from './pages/Home';
 import SignUpPage from './pages/SignUpPage';
 import { StudentDashboard } from './pages/StudentDashboard';
 import { TutorDashboard } from './pages/TutorDashboard';
